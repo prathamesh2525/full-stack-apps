@@ -15,3 +15,5 @@
 - MongoDB (Database)
 - Node.js & Express.js (Server)
 - React Router (Routing)
+
+[Demo of Admin Dashboard](https://github.com/prathamesh2525/full-stack-apps/assets/61145586/f838bec3-3542-43ae-aac0-ba1f9f298beb)
