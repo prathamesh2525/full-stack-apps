@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="w-full h-screen">
+    <div class="h-screen relative">
+      <h1 class="text-4xl font-bold p-4">Chat App!!!</h1>
+
+      <div class="absolute bottom-0 flex w-full">
+        <input
+          class="border-black border-2 rounded px-4 py-2 grow"
+          id="msg"
+          type="text"
+          placeholder="Enter Message"
+        />
+        <input
+          onchange="upload(this.files)"
+          class="hidden"
+          type="file"
+          id="file-input"
+          name="file-input"
+        />
+        <label
+          class="px-4 py-2 rounded border-2 border-black cursor-pointer hover:opacity-75"
+          for="file-input"
+          >Send File</label
+        >
+        <button
+          class="px-4 py-2 bg-black text-white font-bold rounded"
+          id="send"
+        >
+          send
+        </button>
+      </div>
+
+      <div
+        class="[&>*:nth-child(odd)]:bg-slate-200 [&>*:nth-child(even)]:bg-white p-4 border-black rounded"
+        id="messages"
+      ></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io()
+      const messageInput = document.getElementById("msg")
+      const sendBtn = document.getElementById("send")
+      const allMessages = document.getElementById("messages")
+      const name = prompt("Enter you Name")
+      const fileInput = document.getElementById("file-input")
+
+      function upload(files) {
+        socket.emit("upload", files[0], (status) => {
+          console.log(status)
+        })
+      }
+
+      socket.on("message", (message) => {
+        const p = document.createElement("p")
+        p.classList.add("p-1")
+        p.innerText = message
+        allMessages.appendChild(p)
+      })
+
+      sendBtn.addEventListener("click", () => {
+        if (messageInput.value) {
+          const message = messageInput.value
+          socket.emit("user-1", `${name}: ${message}`)
+          messageInput.value = ""
+        }
+      })
+    </script>
+  </body>
+</html>
