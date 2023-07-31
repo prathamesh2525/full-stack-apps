@@ -1,10 +1,11 @@
 const express = require("express")
 const cors = require("cors")
-require("dotenv").config()
 const mongoose = require("mongoose")
-const adminRouter = require("./routes/admin")
+require("dotenv").config()
+const adminRouter = require("./routes/admin.js")
 const userRouter = require("./routes/user")
 
+const PORT = 8080
 const app = express()
 
 app.use(cors())
@@ -13,11 +14,11 @@ app.use(express.json())
 app.use("/admin", adminRouter)
 app.use("/user", userRouter)
 
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+mongoose.connect(process.env.MONGODB_CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 
-app.listen(8080, () => {
-  console.log("Server is listening on port http://localhost:8080")
+app.listen(PORT, () => {
+  console.log(`Server running on port http://localhost:${PORT}`)
 })
